@@ -26,6 +26,8 @@ Looks like the `users` table has 10320 duplicate data for a single record and th
 ## Question 2
 You're given a sorted index array that contians no keys. The array contains only integers, and your task is to identify whether or not the integer you're looking for is in the array. Write a function that searches for the integer and returns true or false based on whether the integer is present. Describe how you arrived at your solution.
 
+## Answer 2
+PHP already has a function for this `in_array($needle,$haystack)` Returns true if needle is found in the array, false otherwise.
 
 ## Question 3
 During a large data migration, you get the following error: Fatal error: Allowed memory size of 134217728 bytes exhausted (tried to allocate 54 bytes). You've traced the problem to the following snippet of code:
@@ -41,6 +43,20 @@ foreach ($results as $result) {
 ```
 Refactor this code so that it stops triggering the memory error.
 
+## Answer 3
+### Option 1
+We can simply set memory limit to -1 to make sure we do not hit memory cap and it can go beyond it's predefined memory limit.
+```php
+
+$stmt = $pdo->prepare('SELECT * FROM largeTable');
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Remove pre defined memory cap.
+ini_set('memory_limit', -1);
+foreach ($results as $result) {
+	// manipulate the data here
+}
+``` 
 
 ## Question 4
 Write drupal module that interact with db get data and display it.
