@@ -44,8 +44,8 @@ foreach ($results as $result) {
 Refactor this code so that it stops triggering the memory error.
 
 ## Answer 3
-### Option 1
-We can simply set memory limit to -1 to make sure we do not hit memory cap and it can go beyond it's predefined memory limit.
+#### Option 1 (Single use)
+We can simply set memory limit to `-1` to make sure we do not hit memory cap and it can go beyond it's predefined memory limit.
 ```php
 
 $stmt = $pdo->prepare('SELECT * FROM largeTable');
@@ -55,6 +55,28 @@ $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ini_set('memory_limit', -1);
 foreach ($results as $result) {
 	// manipulate the data here
+}
+``` 
+#### Option 2 (Frequent use)
+Execute this in batch with 1000 result size.
+```php
+// First count no of rows.
+$stmt = $pdo->prepare('SELECT count(*) as total FROM largeTable');
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Get batch counter
+$loop_counter = ceil($results['total'] / 1000);
+
+// Run 1000 result batch.
+for($i =0; $i < $loop_counter; $i++){
+    $limit = $i.','.($i+1000);
+    $stmt = $pdo->prepare('SELECT * FROM largeTable LIMIT '.$limit);
+    $stmt->execute();
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($results as $result) {
+        // manipulate the data here
+    }
 }
 ``` 
 
