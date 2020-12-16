@@ -1,0 +1,8 @@
+
+db_handler.db_controller_hello:
+  path: '/db_handler/index/{name}'
+  defaults:
+    _controller: '\Drupal\db_handler\Controller\DbController::index'
+    _title: 'DB Data'
+  requirements:
+    _permission: 'access content'

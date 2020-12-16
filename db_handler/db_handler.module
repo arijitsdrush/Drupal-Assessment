@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains db_handler.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function db_handler_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the db_handler module.
+    case 'help.page.db_handler':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('DB handler') . '</p>';
+      return $output;
+
+    default:
+  }
+}

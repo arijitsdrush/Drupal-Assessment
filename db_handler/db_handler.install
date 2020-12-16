@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function db_handler_schema()
+{
+  $schema['test'] = [
+    'description' => 'Test item',
+    'fields' => [
+      'id' => [
+        'description' => 'Unique ID',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'langcode' => [
+        'description' => 'The langcode of this item.',
+        'type' => 'varchar_ascii',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'description' => [
+        'description' => 'The item description.',
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ]
+    ],
+    'primary key' => [
+      'id',
+    ],
+  ];
+  return $schema;
+}

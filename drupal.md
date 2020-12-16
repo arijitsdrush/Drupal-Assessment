@@ -83,6 +83,9 @@ for($i =0; $i < $loop_counter; $i++){
 ## Question 4
 Write drupal module that interact with db get data and display it.
 
+## Answer 4
+Find `db_handler` module inside this repo
+
 
 ## Question 5
 In production, we'll be caching to memcache. On staging, we'll be caching to APC. In development, we won't be caching at all. Design a library that allows you to store and retrieve data from the cache (only two methods required) and fits the requirements of all three environments. Consider making use of anything appropriate (e.g. traits, classes, interfaces, abstract classes, closures, etc) to solve this problem.
@@ -130,6 +133,14 @@ function fizzBuzz($start = 1, $stop = 100)
 ## Question 7
 I've developed a class called Select to represent the SELECT statements I'd normally write for a database. I want to be able to use the Select objects as queries and automatically cast them to strings, but when I use them in PDOStatement::execute() I get the following error: Catchable fatal error: Object of class Select could not be converted to string. What should I change in my Select class so that this error goes away?
 
+### Answer 7
+`serialize` the object and then return it to get string representation.
 
 ## Question 8
 Did you work in Drupal headless project before? if yes please explain challenges you faced.
+
+### Answer 8
+Yes I did work on Drupal headless project the problem we faced were of 2 types 
+* Started exposing data using drupal views but it either exposes too much data or too little data. Creating relation between user and node was another pain point, we need to create our own custom view and then expose the JSON actually ended up with lot's of endpoints and for app it is expensive to call multiple endpoints.
+* If we have intranet website rendering image to app is a problem since app can not look through VPN.
+ 
