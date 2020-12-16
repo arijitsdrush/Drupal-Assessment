@@ -92,6 +92,64 @@ In production, we'll be caching to memcache. On staging, we'll be caching to APC
 
 Note: This is an architecture question. Please focus on the design of your library, rather than implementation or the specific caches I've described.
 
+## Answer 6
+`Cache Interface`
+```php
+<?php
+namespace Project\Cache;
+
+interface CacheInterface {
+
+/**
+* Get cache data.
+**/
+public function getCache($cache_key);
+/**
+* Set cache data.
+**/
+public function setCache($cache_key,$cache_data,$expire);
+}
+
+```
+`Interface Implementation`
+
+```php
+<?php
+namespace Project\Cache;
+
+use Project\Cache\CacheInterface;
+
+class Cache implements CacheInterface {
+
+public $cacheDriver;
+
+    /**
+    * Pass cacheadapter class as Dependency so user can switch between 
+    * adapters (e.g: Memcache, Redis etc).
+    **/
+    public function __construct(CacheDriver $cacheDriver){
+     $this->cacheDriver = $cacheDriver;
+    }
+    
+    public function getCache($cache_key){
+    // Do stuff here to get cache key from an adapter.
+    }
+    
+    public function setCache($cache_key,$cache_data,$expire){
+    // Do stuff here to set cache key with adapter. 
+    }
+
+}
+```
+`calling`
+
+```php
+// Replace this with specific cache driver.
+$memcacheDriver = new Project\Cache\Driver\Memcache();
+// Inject cache driver.
+$cache = new Project\Cache\Cache($memcacheDriver);
+$cache->setCache('my_fancy_key','my_Serialize_data',3600);
+```
 
 ## Question 6
 Write a complete set of unit tests for the following code:
@@ -128,7 +186,35 @@ function fizzBuzz($start = 1, $stop = 100)
 	return $string;
 }
 ```
+## ANSWER 6
+```php
+<?php 
+use PHPUnit\Framework\TestCase;
 
+class test extends PHPUnit_Framework_TestCase {
+    public function test_fizzBuzz() {
+    // If stop value is less than start value.
+    $this->expectException(InvalidArgumentException::class);
+    fizzBuzz(100,1); 
+    // If start value is less than 0.
+    $this->expectException(InvalidArgumentException::class);
+    fizzBuzz(-1,1);  
+    // If stop value is less than 0.
+    $this->expectException(InvalidArgumentException::class);
+    fizzBuzz(1,-1);  
+    // If mod by 3.
+    $this->assertTrue( fizzBuzz( 3,4 ) == 'Fizz4');
+     // If mod by 5.
+     $this->assertTrue( fizzBuzz( 10,11 ) == 'Buzz11');
+     // If mod by both 3 and 5.
+     $this->assertTrue( fizzBuzz( 15,16 ) == 'FizzBuzz16');
+     // If no mod hit.
+     $this->assertTrue( fizzBuzz( 1,2 ) == '12');
+     // Check a range.
+     $this->assertTrue( fizzBuzz( 1,15 ) == '12Fizz4BuzzFizz78FizzBuzz11Fizz1314FizzBuzz');
+    }
+}
+```
 
 ## Question 7
 I've developed a class called Select to represent the SELECT statements I'd normally write for a database. I want to be able to use the Select objects as queries and automatically cast them to strings, but when I use them in PDOStatement::execute() I get the following error: Catchable fatal error: Object of class Select could not be converted to string. What should I change in my Select class so that this error goes away?
