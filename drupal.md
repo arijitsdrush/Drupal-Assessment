@@ -92,7 +92,7 @@ In production, we'll be caching to memcache. On staging, we'll be caching to APC
 
 Note: This is an architecture question. Please focus on the design of your library, rather than implementation or the specific caches I've described.
 
-## Answer 6
+## Answer 5ß
 `Cache Interface`
 ```php
 <?php
